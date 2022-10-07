@@ -25,9 +25,16 @@ window.onload = () => {
       square.classList.remove(X_CLASS);
       square.classList.remove(O_CLASS);
       square.addEventListener("click", squareClick, { once: true });
+      square.addEventListener("mouseover", mouseHoverIn);
+      square.addEventListener("mouseout", mouseHoverOut);
     }
   }
-
+  function mouseHoverIn(event) {
+    event.target.classList.add("hover");
+  }
+  function mouseHoverOut(event) {
+    event.target.classList.remove("hover");
+  }
   function squareClick(event) {
     if (isX) {
       event.target.classList.remove("O");
