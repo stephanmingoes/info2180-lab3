@@ -18,12 +18,15 @@ window.onload = () => {
   function startGame() {
     isX = true;
     board = document.querySelector("#board");
+    document.querySelector("#status").innerHTML =
+      "Move your mouse over a square and click to play an X or an O.";
     squares = board.children;
     for (let i = 0; i < squares.length; i++) {
       square = squares[i];
       square.classList.add("square");
       square.classList.remove(X_CLASS);
       square.classList.remove(O_CLASS);
+      square.innerHTML = null;
       square.addEventListener("click", squareClick, { once: true });
       square.addEventListener("mouseover", mouseHoverIn);
       square.addEventListener("mouseout", mouseHoverOut);
@@ -36,30 +39,36 @@ window.onload = () => {
     event.target.classList.remove("hover");
   }
   function squareClick(event) {
+    placeMark(event);
+    let currentClass = isX ? X_CLASS : O_CLASS;
+    if (checkWin(currentClass)) {
+      document.querySelector("#status").innerHTML = currentClass + " Won";
+    }
+
+    isX = !isX;
+    return;
+  }
+
+  function placeMark(event) {
     if (isX) {
       event.target.classList.remove("O");
       event.target.classList.add("X");
       event.target.innerHTML = "X";
-      isX = false;
-      console.log(squares);
       return;
     }
     event.target.classList.remove("X");
     event.target.classList.add("O");
     event.target.innerHTML = "O";
-    isX = true;
-    console.log(squares);
-    return;
   }
 
-  function addXorO() {
-    for (let i = 0; i < squares.length; i++) {
-      element = squares[i];
-      element.addEventListener("click", () => {
-        console.log(squares);
+  function checkWin(currentClass) {
+    return WINNING_COMBINATIONS.some((combination) => {
+      return combination.every((index) => {
+        return squares[index].classList.contains(currentClass);
       });
-    }
+    });
   }
+
+  document.querySelector(".btn").addEventListener("click", startGame);
   startGame();
-  addXorO();
 };
