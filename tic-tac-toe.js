@@ -20,6 +20,7 @@ window.onload = () => {
     board = document.querySelector("#board");
     document.querySelector("#status").innerHTML =
       "Move your mouse over a square and click to play an X or an O.";
+    document.querySelector("#status").classList.remove("you-won");
     squares = board.children;
     for (let i = 0; i < squares.length; i++) {
       square = squares[i];
@@ -42,7 +43,9 @@ window.onload = () => {
     placeMark(event);
     let currentClass = isX ? X_CLASS : O_CLASS;
     if (checkWin(currentClass)) {
-      document.querySelector("#status").innerHTML = currentClass + " Won";
+      document.querySelector("#status").classList.add("you-won");
+      document.querySelector("#status").innerHTML =
+        "Congratulations! " + currentClass + " is the Winner!";
     }
 
     isX = !isX;
